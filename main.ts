@@ -1,3 +1,16 @@
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    Ship.setVelocity(-20, 0)
+})
+controller.left.onEvent(ControllerButtonEvent.Released, function () {
+    Ship.setVelocity(0, 0)
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    Ship.setVelocity(20, 0)
+})
+controller.right.onEvent(ControllerButtonEvent.Released, function () {
+    Ship.setVelocity(0, 0)
+})
+let Ship: Sprite = null
 scene.setBackgroundImage(img`
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
@@ -120,7 +133,7 @@ f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 `)
-let Ship = sprites.create(img`
+Ship = sprites.create(img`
 . . . . . . . 1 . . . . . . . . 
 . . . . . . 1 8 1 . . . . . . . 
 . . . 2 . . 8 1 8 . . 2 . . . . 
@@ -156,3 +169,4 @@ let Alien = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Enemy)
+Ship.setPosition(80, 100)
