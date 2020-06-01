@@ -1,17 +1,17 @@
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(-20, 0)
 })
-controller.left.onEvent(ControllerButtonEvent.Released, function () {
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(0, 0)
 })
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    Ship.setVelocity(20, 0)
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    Alien.setFlag(SpriteFlag.Invisible, true)
+    Laser.setFlag(SpriteFlag.Invisible, true)
+    Alien.setPosition(Math.randomRange(20, 140), 20)
+    Alien.setFlag(SpriteFlag.Invisible, false)
 })
-controller.right.onEvent(ControllerButtonEvent.Released, function () {
-    Ship.setVelocity(0, 0)
-})
-let Ship: Sprite = null
-scene.setBackgroundImage(img`
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    scene.setBackgroundImage(img`
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
@@ -133,6 +133,157 @@ f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 `)
+    Ship.setFlag(SpriteFlag.Invisible, false)
+    Alien.setFlag(SpriteFlag.Invisible, false)
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    Ship.setVelocity(20, 0)
+})
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    Laser = sprites.createProjectileFromSprite(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 2 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 2 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 2 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 2 . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, Ship, 0, -100)
+})
+let Laser: Sprite = null
+let Alien: Sprite = null
+let Ship: Sprite = null
+scene.setBackgroundImage(img`
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f 1 1 f f 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 1 1 f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 1 f f f f f f f f f f f f f f 1 1 f f f f f f f f f f f 1 f f f f f f f f f f f f 1 1 1 f 1 f 1 f f 1 f f f 1 f f 1 f f f f f f f f f 1 1 1 1 f f f f f f f f f f f f 1 f f f f 1 f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f 1 f f f f f f f f f f f f f f f 1 1 f f f f f f f f f f f f f 1 f f f f f f f f f f f 1 f f 1 1 f 1 f f 1 f f f 1 f f 1 f f f f f f 1 f 1 f f f f f f f f f f f f f f f f 1 f f f f 1 f f f f f f 1 f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f 1 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f 1 f f f f f 1 f f 1 f f f 1 f f f 1 f f f f 1 f f 1 f f f f f f f f f f f f f f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f 1 1 f f f 1 1 1 1 1 1 1 1 1 f f f 1 f f f f 1 1 1 1 1 1 1 1 1 1 f f f 1 f f f f f f f f f 1 f f f f f 1 f f 1 f f f 1 f f f 1 f f f f 1 f f 1 1 1 1 f f f f f f f f f f f f f 1 1 1 1 1 f f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f 1 f f f f f f f f f f f f f 1 1 f f f f f f f f f f f f f 1 f f f 1 1 f f f f f f f f 1 f f f f f 1 f f 1 f f f 1 f f f 1 f f f 1 f f f 1 f f f f f f f f f f f f f f f f 1 f 1 f f f f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f 1 1 1 f f f f f f f f f f 1 1 f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f 1 f f f f f 1 f f 1 f f f 1 f f f f 1 f 1 f f f f 1 f f f f f f f f f f f f f f f f 1 f f 1 1 f f f f 1 f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 1 f f f f f f f f f 1 1 f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f 1 f f f f f 1 f f 1 1 1 1 1 f f f f 1 f 1 f f f f 1 f f 1 1 f f f f f f f f f f f f 1 f f f f 1 f f 1 f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f 1 1 f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f 1 1 f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f 1 1 1 1 1 1 1 1 f f f 1 1 1 1 1 1 1 f f 1 1 1 1 1 1 1 f f f f f f f f f 1 f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f 1 f f f f f f f f f 1 1 f f f f 1 1 f f 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f 1 f f f f f f f f f 1 1 f f f 1 f 1 f f 1 f f f 1 f 1 f f f f f f 1 f f 1 1 1 1 1 f f f f f f 1 f f f 1 f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 1 1 1 1 1 1 f f f f f f f f f 1 f 1 f f 1 f 1 f f 1 f f f 1 f 1 f f f f f 1 f f f f f 1 1 1 f f f f f f 1 f f f 1 f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f f f f f f f f f f f 1 f f 1 1 f f 1 f f 1 f f f 1 f 1 f f f f f 1 f f f f f 1 f f f f f f f f 1 1 f f 1 f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 1 1 1 f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f f f f f f f f f f f 1 f f f f f f 1 f f 1 f f f 1 f f 1 f f f f 1 f f f f f 1 f f f f f f f f 1 1 f f 1 f f f 1 f 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f f f f f f f f f f f 1 f f f f f f 1 f f 1 f f f 1 f f 1 f f f 1 f f f f f f 1 f f f f f f f f 1 f 1 f 1 f f f 1 f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f f f f f f f f f f f 1 f f f f f f 1 f f 1 f f f 1 f f f 1 f f 1 f f f f f f 1 f f f f f f f f 1 f 1 f 1 f f f 1 f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 f f f f 1 f f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f f f f f f f f f f f 1 f f f f f f 1 f f 1 f f f 1 f f f 1 f 1 f f f f f f f 1 f f f f f f f f 1 f f 1 1 f f f 1 f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 f f f 1 f f f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f 1 f f f f f 1 f f 1 f f f f f f f f f f f f f f f 1 f f f f f f 1 f f 1 f f f 1 f f f 1 f 1 f f f f f 1 1 1 1 1 1 f f f f f f f f 1 1 f f f 1 f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f 1 f 1 f f f f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f 1 f f f f f 1 f f f 1 f f f f f f f f f f f f f f 1 f f f f f f 1 f f 1 1 1 1 1 f f f f 1 1 f f f f f f f f f f f f f f f f f f f f 1 f f f 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f 1 1 1 f f f f f f 1 f f f f f f f 1 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 1 f f f f f f f f f f f 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f 1 f 1 f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 f 1 f 1 f f f f f f f f f f 1 f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f 1 f f f f 1 f f f 1 1 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 f 1 f f 1 f f f f f f f f f 1 f f f f f f f f f f 1 f f f f f 1 f f f 1 1 1 1 1 f f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f f 1 f f f f f 1 f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f f 1 f f f f f 1 f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f f 1 f f 1 1 1 1 f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f 1 1 1 1 1 f f f f f 1 1 1 f f f 1 f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f 1 f f f f f 1 f f f f f 1 f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f 1 f f f f f 1 f f f f f 1 f f f 1 f f f f 1 f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f 1 f f f f f 1 f f f f f 1 f f f 1 f f f f f f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f 1 f f f f f 1 f f f f f f 1 f f 1 f f 1 1 1 f f f f f 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f 1 f f f f f f f f f f f f f f 1 1 1 1 f f f f f f f f f f f f f f f 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f 1 1 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f 1 1 1 1 1 1 1 1 1 f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f 1 f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 1 1 1 1 f f f 1 1 1 1 1 1 1 1 1 f f f f f 1 f f f f f f f f 1 1 1 1 1 1 1 1 1 1 f f f f 1 1 1 1 1 1 1 1 1 1 1 f f f f f f f f f f f 
+f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f f f f 1 f f f f f f 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f 1 f 1 f f f f f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 1 1 1 1 1 1 f f f f f 1 f f f f f f f f f f 1 f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f 1 f 1 f f f f f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f f f f 1 f f f f 1 f f f f f f f f f 1 f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f 1 f 1 f f f f f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f f f f 1 f f f f 1 f f f f f f f f 1 f f f f f f f f 1 f f f 1 1 1 1 f f f 1 1 f f f 1 f f f 1 1 1 1 f f f 1 1 1 1 f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f 1 f 1 f f f f f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f 1 1 1 1 f f f f 1 f f f f f f f f 1 f f f f f f f f 1 f f 1 f f f f f f 1 f 1 f f 1 1 f f f 1 f f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f 1 f f f 1 f f f f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 1 1 1 f f f 1 f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f 1 f f f f f f 1 f 1 f f 1 1 f f f 1 f f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f 1 f f f 1 f f f f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f f f f 1 f f f f 1 f f f f f f f 1 f f f f f f f f f 1 f f 1 f f f f f f 1 f 1 f 1 f 1 f f f 1 f f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f 1 f f f 1 f f f f f f f 1 1 1 1 1 1 1 1 f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f f f f 1 f f f f 1 f f f f f f 1 f f f f f f f f f f 1 f f 1 1 f f f f f 1 f 1 f 1 f 1 f f f 1 f f f f f f 1 1 1 1 f f f f f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f 1 f f f 1 1 1 f f f f f f 1 1 f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f 1 f f f f 1 1 f f f 1 1 1 f 1 1 1 1 f f 1 f f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f 1 1 1 1 1 1 1 1 f f f f f f f 1 f f f f f f 1 1 1 1 f f 1 f f f f f f 1 f 1 f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f 1 f f f 1 f f f f f f 1 f f f f 1 f f f f f 1 f f f f f f f f f f f 1 f f f f f 1 f f f 1 f f 1 f f f 1 f f 1 f f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f 1 f f f f f f 1 f f f f f 1 f f f f f f 1 f f 1 f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f 1 f f f f f f f f f f f f 1 f f f f f 1 f f f 1 f f 1 f f f 1 f f 1 f 1 1 f f f 1 f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f 1 f f f f f f 1 f f f f f 1 f f f f f f 1 f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f f f 1 f f f f f f f f f f f 1 f f f f f f 1 f f f f f f f f f f f f 1 f f f 1 1 1 f f f 1 f f f f f f f 1 f 1 1 f f f f 1 1 1 1 1 1 f f f f 1 f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f f f f f f 1 f f f f f 1 f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f f f f 1 f f f f f f f f f 1 f f f f f f 1 f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f f f f f f 1 f f f f f 1 f f f f 1 f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f 
+f f f f f f f f f 1 1 1 1 1 1 1 1 1 f f f f f f 1 f f f f f f f f f f f f f f 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f 1 f f f f f 1 f f f f f f f 1 f f f f f 1 f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 f f 1 f f f f f f f f 1 f f f f f 1 f f f f f f f f 1 f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 1 1 f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f f 1 f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+`)
 Ship = sprites.create(img`
 . . . . . . . 1 . . . . . . . . 
 . . . . . . 1 8 1 . . . . . . . 
@@ -151,17 +302,17 @@ Ship = sprites.create(img`
 . . . . . . . 8 . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-let Alien = sprites.create(img`
+Alien = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-. . . 1 . . . . . 1 . . . . . . 
-. . . . 1 . . . 1 . . . . . . . 
-. . . 1 1 1 1 1 1 1 . . . . . . 
-. . 1 1 f 1 1 1 f 1 1 . . . . . 
-. 1 1 1 1 1 1 1 1 1 1 1 . . . . 
-. 1 . 1 1 1 1 1 1 1 . 1 . . . . 
-. 1 . 1 . . . . . 1 . 1 . . . . 
-. . . . 1 1 . 1 1 . . . . . . . 
+. . . a . . . . . a . . . . . . 
+. . . . a . . . a . . . . . . . 
+. . . a a a a a a a . . . . . . 
+. . a a f a a a f a a . . . . . 
+. a a a a a a a a a a a . . . . 
+. a . a a a a a a a . a . . . . 
+. a . a . . . . . a . a . . . . 
+. . . . a a . a a . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -170,3 +321,7 @@ let Alien = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Enemy)
 Ship.setPosition(80, 100)
+Alien.setPosition(Math.randomRange(20, 140), 20)
+Ship.setFlag(SpriteFlag.StayInScreen, true)
+Ship.setFlag(SpriteFlag.Invisible, true)
+Alien.setFlag(SpriteFlag.Invisible, true)
