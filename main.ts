@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Barrier = SpriteKind.create()
+}
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(-20, 0)
 })
@@ -135,6 +138,14 @@ f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 `)
     Ship.setFlag(SpriteFlag.Invisible, false)
     Alien.setFlag(SpriteFlag.Invisible, false)
+    Planet.setFlag(SpriteFlag.Invisible, false)
+    Alien.setVelocity(0, 10)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    Alien.destroy()
+    Ship.destroy()
+    game.over(false)
+    game.reset()
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(20, 0)
@@ -160,6 +171,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 `, Ship, 0, -100)
 })
 let Laser: Sprite = null
+let Planet: Sprite = null
 let Alien: Sprite = null
 let Ship: Sprite = null
 scene.setBackgroundImage(img`
@@ -305,14 +317,14 @@ Ship = sprites.create(img`
 Alien = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-. . . a . . . . . a . . . . . . 
-. . . . a . . . a . . . . . . . 
-. . . a a a a a a a . . . . . . 
-. . a a f a a a f a a . . . . . 
-. a a a a a a a a a a a . . . . 
-. a . a a a a a a a . a . . . . 
-. a . a . . . . . a . a . . . . 
-. . . . a a . a a . . . . . . . 
+. . . . 7 . 7 . 7 . 7 . . . . . 
+. . . . . 7 7 7 7 7 . . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . . 7 7 7 7 7 . . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . . 7 7 7 7 7 . . . . . . 
+. . . . 7 . 7 . 7 . 7 . . . . . 
+. . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -320,8 +332,45 @@ Alien = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Enemy)
+Planet = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. 1 1 . . . . . . . . . . . . . 
+. 2 2 . . 1 1 . . . . . . . . . 
+. 1 1 . 1 1 1 1 . . . . . . . . 
+. 1 1 . 1 1 1 1 . 1 1 1 1 . . . 
+. 1 1 . 1 1 1 1 . 1 1 1 1 e e e 
+e e e e e e e e e e e e e e e e 
+`, SpriteKind.Barrier)
 Ship.setPosition(80, 100)
 Alien.setPosition(Math.randomRange(20, 140), 20)
 Ship.setFlag(SpriteFlag.StayInScreen, true)
 Ship.setFlag(SpriteFlag.Invisible, true)
+Planet.setFlag(SpriteFlag.Invisible, true)
 Alien.setFlag(SpriteFlag.Invisible, true)
+Alien.setFlag(SpriteFlag.StayInScreen, false)
+Planet.setPosition(50, 110)
+Planet.vy = 5000
+if (Planet.isHittingTile(CollisionDirection.Left)) {
+    Planet.vy = 5000
+}
+if (Planet.isHittingTile(CollisionDirection.Right)) {
+    Planet.vy = -5000
+}
+forever(function () {
+    if (Alien.y > 110) {
+        Alien.setVelocity(0, 0)
+        Alien.setFlag(SpriteFlag.Invisible, true)
+        Alien.setPosition(Math.randomRange(20, 140), 20)
+        Alien.setVelocity(0, 10)
+        Alien.setFlag(SpriteFlag.Invisible, false)
+    }
+})
