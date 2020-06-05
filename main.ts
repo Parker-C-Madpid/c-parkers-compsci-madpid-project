@@ -347,6 +347,9 @@ game.onUpdateInterval(2000, function () {
     SCORE += 1
 })
 forever(function () {
+    Ship.vx += controller.dx()
+})
+forever(function () {
     if (Alien.y > 110) {
         Alien.setFlag(SpriteFlag.Invisible, true)
         Alien.setPosition(Math.randomRange(20, 140), 20)
@@ -354,7 +357,4 @@ forever(function () {
         info.changeLifeBy(-1)
         Alien.setVelocity(0, 10)
     }
-})
-forever(function () {
-    Ship.vx += controller.dx()
 })
