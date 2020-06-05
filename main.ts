@@ -14,6 +14,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     Alien.setFlag(SpriteFlag.Invisible, false)
     Laser.vy += -5
     Alien.vy += 5
+    info.changeScoreBy(100)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     scene.setBackgroundImage(img`
@@ -342,9 +343,6 @@ Ship.setFlag(SpriteFlag.StayInScreen, true)
 Ship.setFlag(SpriteFlag.Invisible, true)
 Alien.setFlag(SpriteFlag.Invisible, true)
 Alien.setFlag(SpriteFlag.StayInScreen, false)
-game.onUpdateInterval(100, function () {
-    info.changeScoreBy(1)
-})
 game.onUpdateInterval(2000, function () {
     SCORE += 1
 })
