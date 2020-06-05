@@ -2,7 +2,11 @@ namespace SpriteKind {
     export const Barrier = SpriteKind.create()
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    Ship.setVelocity(-20, 0)
+    Ship.setVelocity(-50, 0)
+    if (SCORE > 10) {
+        Ship.vx += -5
+        SCORE = 0
+    }
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(0, 0)
@@ -141,6 +145,9 @@ f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
     Ship.setFlag(SpriteFlag.Invisible, false)
     Alien.setFlag(SpriteFlag.Invisible, false)
     Alien.setVelocity(0, 10)
+    info.setScore(0)
+    info.setLife(3)
+    SCORE = 0
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(20, 0)
@@ -172,6 +179,7 @@ info.onLifeZero(function () {
     game.reset()
 })
 let Laser: Sprite = null
+let SCORE = 0
 let Alien: Sprite = null
 let Ship: Sprite = null
 scene.setBackgroundImage(img`
@@ -338,9 +346,11 @@ Ship.setFlag(SpriteFlag.StayInScreen, true)
 Ship.setFlag(SpriteFlag.Invisible, true)
 Alien.setFlag(SpriteFlag.Invisible, true)
 Alien.setFlag(SpriteFlag.StayInScreen, false)
-info.setLife(3)
 game.onUpdateInterval(100, function () {
     info.changeScoreBy(1)
+})
+game.onUpdateInterval(2000, function () {
+    SCORE += 1
 })
 forever(function () {
     if (Alien.y > 110) {
