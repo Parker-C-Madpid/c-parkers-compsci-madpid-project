@@ -2,11 +2,7 @@ namespace SpriteKind {
     export const Barrier = SpriteKind.create()
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    Ship.setVelocity(-50, 0)
-    if (SCORE > 10) {
-        Ship.vx += -5
-        SCORE = 0
-    }
+    Ship.setVelocity(-20, 0)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Ship.setVelocity(0, 0)
@@ -170,7 +166,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-`, Ship, 0, -100)
+`, Ship, 0, -200)
 })
 info.onLifeZero(function () {
     Alien.destroy()
@@ -178,8 +174,8 @@ info.onLifeZero(function () {
     game.over(false)
     game.reset()
 })
-let Laser: Sprite = null
 let SCORE = 0
+let Laser: Sprite = null
 let Alien: Sprite = null
 let Ship: Sprite = null
 scene.setBackgroundImage(img`
@@ -360,4 +356,7 @@ forever(function () {
         info.changeLifeBy(-1)
         Alien.setVelocity(0, 10)
     }
+})
+forever(function () {
+    Ship.vx += controller.dx()
 })
